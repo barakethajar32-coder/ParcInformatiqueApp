@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ParcInformatiqueApp.Models;
+using ParcInformatiqueApp.Security;
 
 namespace ParcInformatiqueApp.Data
 {
@@ -8,25 +9,21 @@ namespace ParcInformatiqueApp.Data
     {
         public static void Seed(AppDbContext context)
         {
-            // Vérifie si la base contient déjà des données
             context.Database.EnsureCreated();
 
-            if (context.Users.Any())
-            {
-                return; // La BDD a déjà été initialisée
-            }
+            if (context.Users.Any()) return;
 
-            // 1. Ajouter un Service
+            // 1. Service IT
             var serviceIT = new Service { NomService = "Informatique" };
             context.Services.Add(serviceIT);
 
-            // 2. Ajouter une Localisation
+            // 2. Localisation
             var loc = new Localisation { Batiment = "A", Salle = "101", NbBureau = "B1" };
             context.Localisations.Add(loc);
 
             context.SaveChanges();
 
-            // 3. Ajouter un Employé
+            // 3. Employé Administrateur
             var employeAdmin = new Employe
             {
                 Nom = "Admin",
@@ -38,11 +35,11 @@ namespace ParcInformatiqueApp.Data
             context.Employes.Add(employeAdmin);
             context.SaveChanges();
 
-            // 4. Ajouter un Utilisateur Admin (Mot de passe à hacher ultérieurement)
+            // 4. Utilisateur Admin avec mot de passe haché par BCrypt
             var userAdmin = new User
             {
                 Login = "admin",
-                MotDePasse = "Admin1234!", // À remplacer par un hash BCrypt plus tard
+                MotDePasse = PasswordHasher.HashPassword("Admin1234!"),
                 Role = "Responsable",
                 StatutCompte = "Activé",
                 DateCreation = DateTime.Now,
