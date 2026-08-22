@@ -9,7 +9,7 @@ namespace ParcInformatiqueApp.Data
         public DbSet<Employe> Employes { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Localisation> Localisations { get; set; }
-        public DbSet<TypeEquipement> TypesEquipements { get; set; }
+        public DbSet<TypeEquipement> TypeEquipements { get; set; }
         public DbSet<Equipement> Equipements { get; set; }
         public DbSet<Affectation> Affectations { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
