@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="ParcInformatiqueApp.Views.Employee.CreateTicketView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{StaticResource BackgroundColor}"
+          Margin="30">
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <Border Background="White"
+                    CornerRadius="10"
+                    Padding="30"
+                    MaxWidth="700"
+                    HorizontalAlignment="Center">
+
+                <StackPanel>
+
+                    <!-- TITRE -->
+
+                    <TextBlock Text="Créer un ticket"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextColor}"
+                               Margin="0,0,0,5"/>
+
+                    <TextBlock Text="Signalez un problème concernant votre équipement"
+                               FontSize="14"
+                               Foreground="{StaticResource TextColor}"
+                               Margin="0,0,0,25"/>
+
+
+                    <!-- ÉQUIPEMENT -->
+
+                    <TextBlock Text="Équipement *"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextColor}"/>
+
+                    <ComboBox x:Name="CmbEquipement"
+                              Height="40"
+                              Margin="0,8,0,20"/>
+
+
+                    <!-- TITRE DU PROBLÈME -->
+
+                    <TextBlock Text="Titre du problème *"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextColor}"/>
+
+                    <TextBox x:Name="TxtTitre"
+                             Height="40"
+                             Margin="0,8,0,20"
+                             Padding="10"/>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <TextBlock Text="Description *"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextColor}"/>
+
+                    <TextBox x:Name="TxtDescription"
+                             Height="130"
+                             Margin="0,8,0,20"
+                             Padding="10"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"/>
+
+
+                    <!-- PRIORITÉ -->
+
+                    <TextBlock Text="Priorité *"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextColor}"/>
+
+                    <ComboBox x:Name="CmbPriorite"
+                              Height="40"
+                              Margin="0,8,0,30">
+
+                        <ComboBoxItem Content="Faible"/>
+                        <ComboBoxItem Content="Normale"/>
+                        <ComboBoxItem Content="Élevée"/>
+
+                    </ComboBox>
+
+
+                    <!-- BOUTONS -->
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+
+                        <Button Content="Annuler"
+                                Width="120"
+                                Height="40"
+                                Margin="0,0,10,0"
+                                Click="BtnAnnuler_Click"/>
+
+                        <Button Content="Créer le ticket"
+                                Width="150"
+                                Height="40"
+                                Click="BtnCreerTicket_Click"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+        </ScrollViewer>
+
+    </Grid>
+
+</UserControl>

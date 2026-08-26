@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="ParcInformatiqueApp.Views.EquipementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{StaticResource BackgroundColor}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <!-- ================= HEADER ================= -->
+
+        <StackPanel Grid.Row="0">
+
+            <TextBlock Text="Parc Informatique"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextColor}"
+                       Margin="0,0,0,15"/>
+
+
+            <!-- Recherche + Filtre + Ajouter -->
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,15">
+
+                <TextBox x:Name="TxtSearch"
+                         Width="220"
+                         Height="35"
+                         Margin="5"
+                         ToolTip="Rechercher un équipement"
+                         TextChanged="TxtSearch_TextChanged"/>
+
+
+                <ComboBox x:Name="CboEtat"
+                          Width="170"
+                          Height="35"
+                          Margin="5"
+                          SelectionChanged="CboEtat_SelectionChanged">
+
+                    <ComboBoxItem Content="Tous"/>
+                    <ComboBoxItem Content="En service"/>
+                    <ComboBoxItem Content="En maintenance"/>
+                    <ComboBoxItem Content="Hors service"/>
+
+                </ComboBox>
+
+
+                <Button Content="+ Ajouter Équipement"
+                        Height="35"
+                        Click="BtnAddEquipement_Click"/>
+
+            </StackPanel>
+
+        </StackPanel>
+
+
+        <!-- ================= DATAGRID ================= -->
+
+        <DataGrid x:Name="DgEquipements"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Nom"
+                                    Binding="{Binding NomEquipement}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="N° Série"
+                                    Binding="{Binding NumeroSerie}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="Marque"
+                                    Binding="{Binding Marque}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="Modèle"
+                                    Binding="{Binding Modele}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="État"
+                                    Binding="{Binding Etat}"
+                                    Width="*"/>
+
+
+                <!-- ACTION -->
+
+                <DataGridTemplateColumn Header="Actions"
+                                        Width="120">
+
+                    <DataGridTemplateColumn.CellTemplate>
+
+                        <DataTemplate>
+
+                            <Button Content="Affecter"
+                                    Click="BtnAffecter_Click"/>
+
+                        </DataTemplate>
+
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+
+</UserControl>

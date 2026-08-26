@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="ParcInformatiqueApp.Views.Employee.MesEquipementsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{StaticResource BackgroundColor}"
+          Margin="30">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <!-- TITRE -->
+
+        <StackPanel Grid.Row="0"
+                    Margin="0,0,0,20">
+
+            <TextBlock Text="Mes équipements"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextColor}"/>
+
+            <TextBlock Text="Les équipements qui vous sont affectés"
+                       FontSize="14"
+                       Foreground="{StaticResource TextColor}"
+                       Margin="0,5,0,0"/>
+
+        </StackPanel>
+
+
+        
+
+
+        <!-- DATAGRID -->
+
+        <DataGrid x:Name="DgMesEquipements"
+                  Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False">
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Équipement"
+                                    Binding="{Binding NomEquipement}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="Type"
+                                    Binding="{Binding Type}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="Marque"
+                                    Binding="{Binding Marque}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="Modèle"
+                                    Binding="{Binding Modele}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="État"
+                                    Binding="{Binding Etat}"
+                                    Width="*"/>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+
+</UserControl>

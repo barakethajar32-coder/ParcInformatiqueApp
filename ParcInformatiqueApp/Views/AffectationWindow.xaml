@@ -1,0 +1,66 @@
+﻿<Window x:Class="ParcInformatiqueApp.Views.AffectationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Affecter un équipement"
+        Height="450"
+        Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Grid Background="{StaticResource BackgroundColor}">
+
+        <Border Background="White"
+                Margin="25"
+                Padding="25"
+                CornerRadius="10">
+
+            <StackPanel>
+
+                <TextBlock Text="Affecter l'équipement"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,25"/>
+
+                <TextBlock Text="Équipement"
+                           FontWeight="SemiBold"/>
+
+                <TextBox x:Name="TxtEquipement"
+                         Height="35"
+                         Margin="0,5,0,15"
+                         IsReadOnly="True"/>
+
+                <TextBlock Text="Employé"
+                           FontWeight="SemiBold"/>
+
+                <ComboBox x:Name="CboEmploye"
+                          Height="35"
+                          Margin="0,5,0,15">
+
+                    <ComboBoxItem Content="Sélectionner un employé"/>
+                    <ComboBoxItem Content="Employé 1"/>
+                    <ComboBoxItem Content="Employé 2"/>
+
+                </ComboBox>
+
+                <TextBlock Text="Date d'affectation"
+                           FontWeight="SemiBold"/>
+
+                <DatePicker x:Name="DateAffectation"
+                            Height="35"
+                            Margin="0,5,0,25"/>
+
+                <!-- BOUTON AFFECTER -->
+                <Button Content="Affecter"
+                        Height="45"
+                        Width="150"
+                        HorizontalAlignment="Center"
+                        Click="BtnAffecter_Click"/>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</Window>
