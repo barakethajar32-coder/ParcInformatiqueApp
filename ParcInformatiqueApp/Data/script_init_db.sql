@@ -143,13 +143,127 @@ END
 GO
 
 -- ============================================================================
--- JEU DE DONNÉES DE TEST (INITIALISATION)
+-- JEU DE DONNÉES INITIAL
 -- ============================================================================
+-- =========================================================
+-- 1. INSERTION DES SERVICES
+-- =========================================================
+INSERT INTO [SERVICES] ([NomService]) VALUES
+(N'Direction Générale'),
+(N'Systèmes d''Information'),
+(N'Ressources Humaines'),
+(N'Comptabilité et Finance');
+GO
 
--- Compte Administrateur / Responsable par défaut (Mot de passe: Admin123!)
-IF NOT EXISTS (SELECT * FROM Users WHERE Username = 'admin')
-BEGIN
-    INSERT INTO Users (Username, MotDePasse, Role, StatutCompte)
-    VALUES ('admin', '$2a$11$q9hKk8uV/S13k.0fG/5e.e89xVqV5kK2T2N8O.9KxR9o0Y5vY2W2K', 'Responsable', 'Actif');
-END
+-- =========================================================
+-- 2. INSERTION DES LOCALISATIONS
+-- =========================================================
+INSERT INTO [LOCALISATIONS] ([NomEmplacement]) VALUES
+(N'Bureau 101 - RDC'),
+(N'Bureau 202 - Etage 1'),
+(N'Salle Serveur - Sous-sol'),
+(N'Open Space - Etage 2');
+GO
+
+-- =========================================================
+-- 3. INSERTION DES TYPES D'ÉQUIPEMENTS
+-- =========================================================
+INSERT INTO [TYPE_EQUIPEMENTS] ([Libelle]) VALUES
+(N'Ordinateur Portable'),
+(N'Ordinateur de Bureau'),
+(N'Serveur Physiques'),
+(N'Imprimante Réseau');
+GO
+
+-- =========================================================
+-- 4. INSERTION DES EMPLOYES
+-- =========================================================
+-- Service 1: Direction, 2: DSI, 3: RH, 4: Compta
+INSERT INTO [EMPLOYES] ([Nom], [Prenom], [Email], [IdService]) VALUES
+(N'El Amrani', N'Youssef', N'y.amrani@entreprise.ma', 2), -- Admin DSI
+(N'Benali', N'Khadija', N'k.benali@entreprise.ma', 2),  -- Technicien DSI
+(N'Chraibi', N'Omar', N'o.chraibi@entreprise.ma', 3),     -- User RH
+(N'Bennani', N'Salma', N's.bennani@entreprise.ma', 4);    -- User Compta
+GO
+
+-- =========================================================
+-- 5. INSERTION DES UTILISATEURS (USERS)
+-- Mots de passe hashés (Exemple générique / Admin123!)
+-- =========================================================
+INSERT INTO [USERS] ([Login], [MotDePasse], [Role], [StatutCompte], [IdEmploye]) VALUES
+(N'admin', N'$2a$11$q9hKk8uV/S13k.0fG/5e.e89xVqV5kK2', N'Responsable', N'Actif', 1),
+(N'tech_benali', N'$2a$11$q9hKk8uV/S13k.0fG/5e.e89xVqV5kK2', N'Technicien', N'Actif', 2),
+(N'emp_chraibi', N'$2a$11$q9hKk8uV/S13k.0fG/5e.e89xVqV5kK2', N'Employe', N'Actif', 3);
+GO
+
+-- =========================================================
+-- 6. INSERTION DES ÉQUIPEMENTS
+-- =========================================================
+INSERT INTO [EQUIPEMENTS] ([NomEquipement], [NumeroSerie], [Etat], [IdType], [IdLocalisation]) VALUES
+(N'Dell Latitude 5520', N'SN-DELL-2026-001', N'En service', 1, 2),
+(N'HP EliteDesk 800', N'SN-HP-2026-002', N'En service', 2, 4),
+(N'Serveur Dell PowerEdge R740', N'SN-SRV-2026-003', N'En service', 3, 3),
+(N'Imprimante HP LaserJet Pro', N'SN-IMP-2026-004', N'En panne', 4, 1);
+GO
+
+-- =========================================================
+-- 7. INSERTION DES LOGICIELS
+-- =========================================================
+INSERT INTO [LOGICIELS] ([NomLogiciel], [Version], [Licence], [DateExpiration]) VALUES
+(N'Microsoft Office 2021', N'16.0', N'Pro Plus Enterprise', '2027-12-31'),
+(N'Kaspersky Endpoint Security', N'11.6', N'KAS-8899-BUS', '2026-11-30'),
+(N'Visual Studio Professional', N'2022', N'VS-PRO-2022-LIC', '2028-05-15');
+GO
+
+-- =========================================================
+-- 8. INSERTION DES AFFECTATIONS
+-- =========================================================
+INSERT INTO [AFFECTATIONS] ([DateDebut], [DateFin], [IdEquipement], [IdEmploye]) VALUES
+('2026-01-10', NULL, 1, 3), -- Laptop affecté à Omar Chraibi (RH)
+('2026-02-01', NULL, 2, 4); -- PC Fixe affecté à Salma Bennani (Compta)
+GO
+
+-- =========================================================
+-- 9. INSERTION DES INSTALLATIONS LOGICIELS
+-- =========================================================
+INSERT INTO [INSTALLATIONS_LOGICIELS] ([DateInstallation], [VersionInstallee], [IdLogiciel], [IdEquipement]) VALUES
+('2026-01-11', N'16.0', 1, 1), -- Office sur Laptop RH
+('2026-01-11', N'11.6', 2, 1), -- Antivirus sur Laptop RH
+('2026-02-02', N'16.0', 1, 2); -- Office sur PC Compta
+GO
+
+-- =========================================================
+-- 10. INSERTION DES TICKETS
+-- =========================================================
+INSERT INTO [TICKETS] 
+([NomTicket], [Description], [Priorite], [Statut], [DateCreation], [DateCloture], [Diagnostic], [TypeIntervention], [ActionRealisee], [IdUserCreateur], [IdUserTraiteur], [IdEquipement]) 
+VALUES
+(
+    N'Imprimante ne s''allume plus', 
+    N'L''imprimante du bureau 101 ne répond plus suite à une coupure d''électricité.', 
+    N'Haute', 
+    N'En cours', 
+    '2026-08-25 09:30:00', 
+    NULL, 
+    N'Bloc d''alimentation grillé.', 
+    N'Matériel', 
+    N'Commande d''un nouveau bloc d''alimentation en cours.', 
+    3, -- Créé par emp_chraibi
+    2, -- Pris en charge par tech_benali
+    4  -- Concerne l'imprimante HP
+),
+(
+    N'Problème d''activation d''Office', 
+    N'Message d''erreur de licence expirée au lancement d''Excel.', 
+    N'Moyenne', 
+    N'Fermé', 
+    '2026-08-20 14:00:00', 
+    '2026-08-20 15:30:00', 
+    N'Clé de produit non renseignée correctement.', 
+    N'Logiciel', 
+    N'Réactivation de la licence via le serveur KMS local.', 
+    3, -- Créé par emp_chraibi
+    1, -- Traité par admin
+    1  -- Concerne le Laptop Dell
+);
 GO
