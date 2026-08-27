@@ -9,7 +9,8 @@ namespace ParcInformatiqueApp.Services
 {
     public class TicketService
     {
-        // 1. Consultation des tickets selon le rôle de l'utilisateur
+        // JOUR 6 : CRÉATION ET RESTRICTIONS DE VUE
+        // 1. Consultation des tickets selon les règles de restriction par rôle
         public List<Ticket> GetTicketsForUser(User user)
         {
             using var context = new AppDbContext();
@@ -20,16 +21,17 @@ namespace ParcInformatiqueApp.Services
                 .AsNoTracking()
                 .AsQueryable();
 
-            // Règle 1 : Un Employé ne voit que ses propres tickets
+            // Règle 1 : Un Employé ne voit que les tickets qu'il a créés
             if (user.Role == "Employé")
             {
                 query = query.Where(t => t.IdUserCreateur == user.IdUser);
             }
-            // Règle 2 : Un Technicien ne voit que ses tickets attribués ou en attente
+            // Règle 2 : Un Technicien ne voit que ses tickets attribués ou non attribués (En attente)
             else if (user.Role == "Technicien")
             {
                 query = query.Where(t => t.IdUserTraiteur == user.IdUser || t.IdUserTraiteur == null);
             }
+            // Note : Le Responsable voit l'ensemble des tickets du parc
 
             return query.OrderByDescending(t => t.DateCreation).ToList();
         }
@@ -85,7 +87,79 @@ namespace ParcInformatiqueApp.Services
             ticket.Priorite = nouvellePriorite;
 
             context.SaveChanges();
-            return (true, "Ticket mis à jour avec succès.");
+            return (true, "Détails du ticket mis à jour avec succès.");
+        }
+
+        // JOUR 7 : AFFECTATION, DIAGNOSTIC ET CLÔTURE
+
+        // 4. Affectation d'un ticket à un technicien par le Responsable
+        public (bool Success, string Message) AffecterTechnicien(int idTicket, int idTechnicien, int idUserAction)
+        {
+            using var context = new AppDbContext();
+
+            var userAction = context.Users.Find(idUserAction);
+            if (userAction == null || userAction.Role != "Responsable")
+                return (false, "Seul un Responsable Informatique peut assigner un ticket.");
+
+            var ticket = context.Tickets.Find(idTicket);
+            if (ticket == null) return (false, "Ticket introuvable.");
+
+            var technicien = context.Users.Find(idTechnicien);
+            if (technicien == null || technicien.Role != "Technicien")
+                return (false, "L'utilisateur sélectionné n'est pas un technicien valide.");
+
+            ticket.IdUserTraiteur = idTechnicien;
+            if (ticket.Statut == "En attente")
+            {
+                ticket.Statut = "En cours";
+            }
+
+            context.SaveChanges();
+            return (true, $"Ticket assigné avec succès au technicien ID {technicien.IdUser}.");
+        }
+        // 5. Traitement d'un ticket par le Technicien (Prise en charge, Diagnostic, Actions, Clôture)
+        public (bool Success, string Message) TraiterTicket(int idTicket, int idTechnicien, string diagnostic, string typeIntervention, string actionRealisee, bool cloturer = false)
+        {
+            using var context = new AppDbContext();
+
+            var ticket = context.Tickets
+                .Include(t => t.Equipement)
+                .FirstOrDefault(t => t.IdTicket == idTicket);
+
+            if (ticket == null) return (false, "Ticket introuvable.");
+
+            var tech = context.Users.Find(idTechnicien);
+            if (tech == null || (tech.Role != "Technicien" && tech.Role != "Responsable"))
+                return (false, "Vous n'avez pas les droits requis pour traiter ce ticket.");
+
+            if (ticket.IdUserTraiteur == null)
+            {
+                ticket.IdUserTraiteur = idTechnicien;
+            }
+
+            ticket.Diagnostic = string.IsNullOrWhiteSpace(diagnostic) ? ticket.Diagnostic : diagnostic.Trim();
+            ticket.TypeIntervention = string.IsNullOrWhiteSpace(typeIntervention) ? ticket.TypeIntervention : typeIntervention.Trim();
+            ticket.ActionRealisee = string.IsNullOrWhiteSpace(actionRealisee) ? ticket.ActionRealisee : actionRealisee.Trim();
+
+            if (cloturer)
+            {
+                ticket.Statut = "Terminé";
+                ticket.DateCloture = DateTime.Now;
+
+                if (ticket.Equipement != null && ticket.Equipement.Etat == "En maintenance")
+                {
+                    ticket.Equipement.Etat = "En service";
+                }
+            }
+            else
+            {
+                ticket.Statut = "En cours";
+            }
+
+            context.SaveChanges();
+
+            string message = cloturer ? "Ticket clôturé et marqué comme 'Terminé'." : "Avancement du traitement enregistré avec succès.";
+            return (true, message);
         }
     }
 }
