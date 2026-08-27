@@ -20,7 +20,15 @@ namespace ParcInformatiqueApp.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=ParcInformatiqueDb;Trusted_Connection=True;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer(
+                    @"Server=.\SQLEXPRESS;Database=ParcInformatiqueDb;Trusted_Connection=True;TrustServerCertificate=True;",
+                    sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: System.TimeSpan.FromSeconds(10),
+                            errorNumbersToAdd: null);
+                    });
             }
         }
 
@@ -28,7 +36,7 @@ namespace ParcInformatiqueApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // 1. Configuration des clés primaires
+            // 1. Clés primaires
             modelBuilder.Entity<Service>().HasKey(s => s.IdService);
             modelBuilder.Entity<Localisation>().HasKey(l => l.IdLocalisation);
             modelBuilder.Entity<Employe>().HasKey(e => e.IdEmploye);
@@ -40,12 +48,12 @@ namespace ParcInformatiqueApp.Data
             modelBuilder.Entity<Logiciel>().HasKey(l => l.IdLogiciel);
             modelBuilder.Entity<InstallationLogiciel>().HasKey(i => i.IdInstallation);
 
-            // 2. Index d'unicité (Empêche deux utilisateurs d'avoir le même Login)
+            // 2. Unicité du Login
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Login)
                 .IsUnique();
 
-            // 3. Configuration des relations multi-clés étrangères pour la table Tickets
+            // 3. Relations Tickets
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.UserCreateur)
                 .WithMany(u => u.TicketsCrees)
@@ -64,7 +72,7 @@ namespace ParcInformatiqueApp.Data
                 .HasForeignKey(t => t.IdEquipement)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuration de la relation 1-à-1 entre Employe et User
+            // 4. Relation 1-à-1 Employe-User
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Employe)
                 .WithOne(e => e.User)
