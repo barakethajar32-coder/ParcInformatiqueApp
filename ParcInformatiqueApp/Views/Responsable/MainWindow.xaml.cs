@@ -27,6 +27,11 @@ namespace ParcInformatiqueApp.Views
             MainContentArea.Content = new ReferentielView();
         }
 
+        private void NavTickets_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentArea.Content = new TicketsView();
+        }
+
         private void NavValidation_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(
@@ -34,6 +39,27 @@ namespace ParcInformatiqueApp.Views
                 "Validation",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+        }
+
+        // ==========================================
+        // DÉCONNEXION
+        // ==========================================
+        private void BtnDeconnexion_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "Voulez-vous vraiment vous déconnecter ?",
+                "Déconnexion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                LoginWindow loginWindow = new LoginWindow();
+
+                loginWindow.Show();
+
+                this.Close();
+            }
         }
     }
 }

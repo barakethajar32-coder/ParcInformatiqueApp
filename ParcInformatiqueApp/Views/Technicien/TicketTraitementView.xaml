@@ -1,0 +1,154 @@
+<UserControl x:Class="ParcInformatiqueApp.Views.Technicien.TicketTraitementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F7FA">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <Grid Margin="30">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- TITRE -->
+
+            <TextBlock Text="Traitement du ticket"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#1F2937"
+                       Margin="0,0,0,25"/>
+
+
+            <!-- NOM -->
+
+            <StackPanel Grid.Row="1"
+                        Margin="0,0,0,15">
+
+                <TextBlock Text="Nom du ticket"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+
+                <TextBox x:Name="TxtNomTicket"
+                         Height="40"
+                         Padding="10"
+                         IsReadOnly="True"/>
+
+            </StackPanel>
+
+
+            <!-- DESCRIPTION -->
+
+            <StackPanel Grid.Row="2"
+                        Margin="0,0,0,15">
+
+                <TextBlock Text="Description"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+
+                <TextBox x:Name="TxtDescription"
+                         Height="90"
+                         Padding="10"
+                         TextWrapping="Wrap"
+                         IsReadOnly="True"/>
+
+            </StackPanel>
+
+
+            <!-- PRIORITÉ -->
+
+            <StackPanel Grid.Row="3"
+                        Margin="0,0,0,15">
+
+                <TextBlock Text="Priorité"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+
+                <TextBox x:Name="TxtPriorite"
+                         Height="40"
+                         Padding="10"
+                         IsReadOnly="True"/>
+
+            </StackPanel>
+
+
+            <!-- STATUT -->
+
+            <StackPanel Grid.Row="4"
+                        Margin="0,0,0,15">
+
+                <TextBlock Text="Statut"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+
+                <ComboBox x:Name="CboStatut"
+                          Height="40">
+
+                    <ComboBoxItem Content="En attente"/>
+                    <ComboBoxItem Content="En cours"/>
+                    <ComboBoxItem Content="Terminé"/>
+
+                </ComboBox>
+
+            </StackPanel>
+
+
+            <!-- DIAGNOSTIC -->
+
+            <StackPanel Grid.Row="5"
+                        Margin="0,0,0,15">
+
+                <TextBlock Text="Diagnostic"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+
+                <TextBox x:Name="TxtDiagnostic"
+                         Height="100"
+                         Padding="10"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"/>
+
+            </StackPanel>
+
+
+            <!-- ACTION -->
+
+            <StackPanel Grid.Row="6"
+                        Margin="0,0,0,20">
+
+                <TextBlock Text="Action réalisée"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+
+                <TextBox x:Name="TxtAction"
+                         Height="100"
+                         Padding="10"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"/>
+
+            </StackPanel>
+
+
+            <!-- BOUTON -->
+
+            <Button Grid.Row="7"
+                    Content="Enregistrer les modifications"
+                    Width="230"
+                    Height="45"
+                    HorizontalAlignment="Right"
+                    Click="BtnEnregistrer_Click"/>
+
+        </Grid>
+
+    </ScrollViewer>
+
+</UserControl>

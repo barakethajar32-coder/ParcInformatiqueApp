@@ -21,9 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Technicien\" />
-    <Folder Include="Views\Responsable\" />
-  </ItemGroup>
-
 </Project>

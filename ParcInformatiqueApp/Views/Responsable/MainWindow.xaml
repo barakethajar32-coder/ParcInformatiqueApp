@@ -44,22 +44,28 @@
                 Background="{StaticResource PrimaryColor}">
 
             <StackPanel Margin="10">
-                
+
                 <Button x:Name="BtnEquipements"
-                        Content="💻 Équipements"
+                        Content="Équipements"
                         Click="NavEquipements_Click"/>
 
                 <Button x:Name="BtnEmployes"
-                        Content="👥 Employés"
+                        Content="Employés"
                         Click="NavEmployes_Click"/>
 
+                <Button x:Name="BtnTickets"
+                    Content="Tickets"
+                    Click="NavTickets_Click"/>
+
                 <Button x:Name="BtnReferentiels"
-                        Content="⚙ Référentiels"
+                        Content="Référentiels"
                         Click="NavReferentiels_Click"/>
 
                 <Button x:Name="BtnValidationUsers"
-                        Content="🔑 Validation Comptes"
+                        Content="Validation Comptes"
                         Click="NavValidation_Click"/>
+                <Button Content="Déconnexion"
+                   Click="BtnDeconnexion_Click"/>
 
             </StackPanel>
 

@@ -31,5 +31,26 @@ namespace ParcInformatiqueApp.Views.Employee
         {
             EmployeeContentArea.Content = new MesTicketsView();
         }
+
+        // ==========================================
+        // DÉCONNEXION
+        // ==========================================
+        private void BtnDeconnexion_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "Voulez-vous vraiment vous déconnecter ?",
+                "Déconnexion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                LoginWindow loginWindow = new LoginWindow();
+
+                loginWindow.Show();
+
+                this.Close();
+            }
+        }
     }
 }

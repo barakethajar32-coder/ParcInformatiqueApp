@@ -1,0 +1,106 @@
+<UserControl x:Class="ParcInformatiqueApp.Views.Technicien.TicketsTechnicienView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F7FA">
+
+    <Grid Margin="25">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TITRE -->
+        <StackPanel>
+
+            <TextBlock Text="Tickets à traiter"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#1F2937"/>
+
+            <TextBlock Text="Consultez et gérez les tickets qui vous sont affectés."
+                       FontSize="14"
+                       Foreground="#6B7280"
+                       Margin="0,5,0,20"/>
+
+        </StackPanel>
+
+        <!-- FILTRE -->
+        <ComboBox x:Name="CboStatut"
+                  Grid.Row="1"
+                  Width="200"
+                  Height="40"
+                  HorizontalAlignment="Left"
+                  Margin="0,0,0,20"
+                  SelectedIndex="0"
+                  SelectionChanged="CboStatut_SelectionChanged">
+
+            <ComboBoxItem Content="Tous"/>
+            <ComboBoxItem Content="En attente"/>
+            <ComboBoxItem Content="En cours"/>
+            <ComboBoxItem Content="Terminé"/>
+
+        </ComboBox>
+
+        <!-- TABLEAU -->
+        <DataGrid x:Name="DgTickets"
+                  Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  RowHeight="45"
+                  FontSize="14">
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Ticket"
+                                    Binding="{Binding NomTicket}"
+                                    Width="*"/>
+
+                <DataGridTextColumn Header="Description"
+                                    Binding="{Binding Description}"
+                                    Width="250"/>
+
+                <DataGridTextColumn Header="Priorité"
+                                    Binding="{Binding Priorite}"
+                                    Width="100"/>
+
+                <DataGridTextColumn Header="Statut"
+                                    Binding="{Binding Statut}"
+                                    Width="110"/>
+
+                <DataGridTextColumn Header="Date"
+                                    Binding="{Binding DateCreation, StringFormat=dd/MM/yyyy}"
+                                    Width="110"/>
+
+                <DataGridTextColumn Header="Équipement"
+                                    Binding="{Binding Equipement.NomEquipement}"
+                                    Width="160"/>
+
+                <!-- ACTION -->
+                <DataGridTemplateColumn Header="Action"
+                                        Width="150">
+
+                    <DataGridTemplateColumn.CellTemplate>
+
+                        <DataTemplate>
+
+                            <Button Content="Traiter"
+                                    Width="100"
+                                    Height="30"
+                                    Click="BtnTraiter_Click"/>
+
+                        </DataTemplate>
+
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+
+</UserControl>
